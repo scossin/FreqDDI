@@ -1,0 +1,5 @@
+Les alignements entre le thésaurus des interactions de l'ANSM et le répertoire des médicaments : voir LinkedThesaurus
+Le fichier RelationThesaurusRepertoire vient de ce répertoire
+Les fichiers COMPO / CIS / CIS_CIP sont téléchargés sur le site de l'ANSM
+Chargement.R crée ANSM.rdata
+dciCIP.R utilise ANSM.rdata et les alignements pour créer le fichier dciCIP.csv contenant, pour chaque dci du thésaurus, le code CIP 
