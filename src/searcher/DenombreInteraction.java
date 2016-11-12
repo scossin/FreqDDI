@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -44,26 +45,24 @@ public class DenombreInteraction {
 		return(resultats);
 	}
 	
-	public ArrayList<String> denombredetails() throws IOException, ParseException{		
+	public ArrayList<String> denombredetails(Path fichierSortie) throws IOException, ParseException{		
 		// Un peu moche : interaction faire une classe comme ordonnance
 		// checker si CIPs1 et CIPs2 se chevauchent
 		// exporter les résultats
 		resultats = new ArrayList<String>();
 		//header : 
-		resultats.add("mol1\tmol2\tdatemin\tdatemax\t"+ 
-				Global.VARIABLE_DATE_DELIVRANCE + 
+		resultats.add("mol1\tmol2"+
 				"\t" + Global.VARIABLE_AGE +
 				"\t" + Global.VARIABLE_NUM_DELIVRANCE + 
 				"\t" + "Nmedocs");
 		
 		int counter=0;
+		int totalcounter=0;
 		for (String[] s : interaction.get_interaction()){
 			ArrayList<String> lignes = new ArrayList<String>();
 			
 			Long[] CIPs1 = interaction.get_moleculesCIP().get_CIP(s[0]);
 			Long[] CIPs2 = interaction.get_moleculesCIP().get_CIP(s[1]);
-			
-
 			
 			String date_min = s[2];
 			String date_max= s[3];
@@ -73,9 +72,19 @@ public class DenombreInteraction {
 				resultats.addAll(lignes);
 			}
 			counter++;
-			System.out.println(counter);
-			if (Global.DEBUG && counter == 100) break; 
+			
+			// toutes les 100 lignes écriture dans le fichier
+			if (counter == 100) {
+				Files.write(fichierSortie, resultats, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+				totalcounter = totalcounter + counter;
+				System.out.println(totalcounter);
+				counter=0;
+				// reset : 
+				resultats = new ArrayList<String>();
+			}
 		}
+		// à la fin, je ne suis pas arrivé à 100 donc les dernières lignes ne sont pas écrites
+		Files.write(fichierSortie, resultats, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
 		return(resultats);
 	}
 	
@@ -91,10 +100,11 @@ public class DenombreInteraction {
 		String fichier_moleculesCIP ="interaction/5112016/moleculesCIP5112016.csv";
 		DenombreInteraction denombre = new DenombreInteraction(Global.INDEX_FOLDER,
 				fichier_interaction,fichier_moleculesCIP);
-		String fichierSortie = "output/denombrementCIP5112016.csv";
+		String fichierSortie = "output/denombrementCIP12112016.csv";
 		Path file = Paths.get(fichierSortie);
-		Files.write(file, denombre.denombre(), Charset.forName("UTF-8"));
-		//Files.write(file, denombre.denombredetails(), Charset.forName("UTF-8"));
+		//Files.write(file, denombre.denombre(), Charset.forName("UTF-8"));
+		denombre.denombredetails(file);
+		
 	}
 
 }

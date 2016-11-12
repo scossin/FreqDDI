@@ -1,11 +1,11 @@
 Le programme a été développé pour dénombrer des interactions médicamenteuses à partir de données de délivrance issues du dossier pharmaceutique. 
-Les fichiers en entrées sont au format CSV. Il est nécessaire d'adapter le programme avec un autre jeu de données. 
-Un fichier fictif est disponible dans le répertoire data2
-Le dossier index doit être créé
+Les fichiers en entrées sont au format CSV. Pour un autre jeu de données, il est nécessaire d'adapter le programme. Un fichier fictif est disponible dans le répertoire data2.
+ 
+Le dossier index doit être créé avant l'indexation des délivrances. 
 
 Les étapes du programmes sont les suivantes : 
-	- indexer les "ordonnances" délivrées. Pour simplifier, on peut fournir en entrées une liste de codes CIP "inclus", c'est à dire que si le code CIP est inconnu (ex : pas une spécialité pharmaceutique),
-	il ne sera pas indexé. 
+	- lister les codes CIP inclus / exclus de l'analyse (on ne veut pas indexer les médicaments homéopathiques par exemple car ils ne sont pas à risque d'interaction)
+	- indexer les "ordonnances" délivrées. 
 	- dénombrer la fréquence des ordonnances, pour cela :
 		- un fichier contenant pour chaque molécule (présente obligatoirement dans le fichier interaction) : molécule - codes CIP
 		- un fichier d'interaction : molécule1 - molécule2 ; signifiant que molécule1 interagit avec molécule2. 
@@ -18,13 +18,12 @@ Les étapes du programmes sont les suivantes :
 	puis dciCIP.R
 
 2) IM/interaction/
-	Créer un nouveau dossier pour y mettre les fichiers concernant les interactions
-	listeInteractions.R en premier puis
-	CIP_inclus_exclus.R
+	Créer un nouveau dossier pour y mettre les fichiers nécessaires au programme JAVA
+	puis adapter le fichier CIP_inclus_exclus.R (3 étapes pour la création de 3 fichiers)
 
-3) Indexer les fichiers avec le programme JAVA. 
+3) Indexer ensuite les délivrances avec le programme JAVA. 
 4) Dénombrer les interactions
-	- denombre : fournit le nombre N d'ordonnances contenant l'interaction
-	- denombredetails : fournit le détail de chaque ordonnance. Si N ordonnances interagissent, on aura N lignes. Chaque ligne : molécule1, molécule2, numordonnance, age, Nmedocs sur l'ordonnance
+	- la fonction denombre fournit le nombre N d'ordonnances contenant l'interaction
+	- la fonction denombredetails fournit le détail de chaque ordonnance. Si N ordonnances interagissent, on aura N lignes. Chaque ligne : molécule1, molécule2, numordonnance, age, Nmedocs sur l'ordonnance
 
-5) Le dossier output sort les résultats de l'analyse
+5) Le dossier output contient les résultats de l'analyse

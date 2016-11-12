@@ -102,7 +102,7 @@ public void denombrer_dates(String dossier_files, String fichier_sortie) throws 
 }
 
 	
-public void denombrer_ageSexe(String variable, String dossier_files, String fichier_sortie) throws IOException{
+public void denombrer_ageSexe(String variable, String dossier_files, String fichier_sortie, String CIPinclusFichier) throws IOException{
 		
 		File folder = new File(dossier_files);
 		File[] listOfFiles = folder.listFiles();
@@ -113,7 +113,14 @@ public void denombrer_ageSexe(String variable, String dossier_files, String fich
 		     
 			 String fichier = listOfFiles[i].getAbsolutePath();
 			 System.out.println(fichier);
-			 DPFiles indexer = new DPFiles(fichier);		
+			 
+			 DPFiles indexer;
+			 if (CIPinclusFichier == null){
+				 indexer = new DPFiles(fichier);		
+			 }else{
+				 indexer = new DPFiles(fichier,CIPinclusFichier); 
+			 }
+			 		
 			 try {
 				indexer.set_numOrdonnance();
 				// pour chaque ordonnance : 				
@@ -186,9 +193,9 @@ public void denombre_folder(String variable, String dossier_files, String fichie
 		Denombrer denombrer = new Denombrer();
 		
 		Boolean denombrement_CIP = false;
-		Boolean denombrement_age = true;
+		Boolean denombrement_age = false;
 		Boolean denombrement_sexe = false;
-		Boolean denombrement_numordo = false;
+		Boolean denombrement_numordo = true;
 		Boolean denombrer_date = false;
 		
 		if (denombrement_CIP){
@@ -198,18 +205,19 @@ public void denombre_folder(String variable, String dossier_files, String fichie
 		
 		if (denombrement_age){
 			String fichier_sortie = "output/liste_age.csv";
-			denombrer.denombrer_ageSexe(Global.VARIABLE_AGE,dossier, fichier_sortie);
+			denombrer.denombrer_ageSexe(Global.VARIABLE_AGE,dossier, fichier_sortie,null);
 		}
 		
 		if (denombrement_sexe){
 			String fichier_sortie = "output/liste_sexe.csv";
 
-			denombrer.denombrer_ageSexe(Global.VARIABLE_SEXE,dossier, fichier_sortie);
+			denombrer.denombrer_ageSexe(Global.VARIABLE_SEXE,dossier, fichier_sortie,null);
 		}
 		
 		if (denombrement_numordo){
 			String fichier_sortie = "output/liste_ordo.csv";
-			denombrer.denombrer_ageSexe("Nmedocs",dossier, fichier_sortie);
+			String CIPinclusFichier="interaction/5112016/CIP7inclus.txt";
+			denombrer.denombrer_ageSexe("Nmedocs",dossier, fichier_sortie,CIPinclusFichier);
 		}
 		
 		if (denombrer_date){

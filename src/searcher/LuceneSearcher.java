@@ -218,9 +218,16 @@ public class LuceneSearcher {
 	    for (int i = 0; i < max_resultat; i++) {
 	       String resultat = "";
 	       Document doc = isearcher.doc(hits[i].doc);
-	       resultat = s[0] + "\t" + s[1] + "\t" + s[2] + "\t" + s[3] + "\t" +
-	    		   doc.get(Global.VARIABLE_DATE_DELIVRANCE) + 
-	    		   "\t" + doc.get(Global.VARIABLE_AGE) + 
+	       resultat = s[0] + "\t" 
+	                 + s[1] + "\t" 
+	                 // date min
+	    		   //+ s[2] + "\t" 
+	               // date max  
+	    		   //+ s[3] + "\t" +
+	                 // date de délivrance
+	    		  //+  doc.get(Global.VARIABLE_DATE_DELIVRANCE) 
+	               + "\t" + doc.get(Global.VARIABLE_AGE) + 
+	               // numéro de la dispensation
 	    		   "\t" + doc.get("id")  +
 	    		   "\t" + doc.get("Nmedocs");
 	       if (Global.DEBUG) System.out.println("detailsHits : " + resultat);

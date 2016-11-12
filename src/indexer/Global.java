@@ -1,7 +1,7 @@
 package indexer;
 
 public class Global {
-	public static Boolean DEBUG = true;
+	public static Boolean DEBUG = false;
 	
 	/*
 	 * Variables dans les fichiers :
